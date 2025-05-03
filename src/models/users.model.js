@@ -16,19 +16,19 @@ export const getUserByIdModel = async (id) => {
   try {
     const client = await pool.getConnection();
     const result = await client.query(`SELECT * FROM users WHERE id = ?`, [id]);
-    return result;
+    return result[0];
   } catch (error) {
     console.log(error);
   }
 };
 
 // add user
-export const addUserModel = async (username, email, password) => {
+export const addUserModel = async (name, email, password, avatar_path) => {
   try {
     const client = await pool.getConnection();
     const result = await client.query(
-      `INSERT INTO users (name,email,password) VALUE(?,?,?)`,
-      [username, email, password]
+      `INSERT INTO users (name,email,password,avatar_path) VALUE(?,?,?,?)`,
+      [name, email, password, avatar_path]
     );
     return result;
   } catch (error) {
@@ -38,17 +38,18 @@ export const addUserModel = async (username, email, password) => {
 
 // update user
 export const updateUserModel = async (
-  username,
+  name,
   email,
   password,
+  avatar_path,
   updated_at,
   id
 ) => {
   try {
     const client = await pool.getConnection();
     const result = await client.query(
-      `UPDATE users SET name = ?, email = ?, password = ?, updated_at = ? WHERE id = ?`,
-      [username, email, password, updated_at, id]
+      `UPDATE users SET name = ?, email = ?, password = ?, avatar_path = ?, updated_at = ? WHERE id = ?`,
+      [name, email, password, avatar_path, updated_at, id]
     );
     return result;
   } catch (error) {
